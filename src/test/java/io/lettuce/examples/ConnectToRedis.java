@@ -17,6 +17,7 @@ package io.lettuce.examples;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
+import io.lettuce.core.api.sync.RedisCommands;
 
 /**
  * @author Mark Paluch
@@ -28,8 +29,14 @@ public class ConnectToRedis {
 
         // Syntax: redis://[password@]host[:port][/databaseNumber]
         // Syntax: redis://[username:password@]host[:port][/databaseNumber]
-        RedisClient redisClient = RedisClient.create("redis://password@localhost:6379/0");
+        RedisClient redisClient = RedisClient.create("redis://123456@localhost:6379/0");
         StatefulRedisConnection<String, String> connection = redisClient.connect();
+
+        RedisCommands<String, String> redisCommands = connection.sync();
+
+        String key = "name";
+        String set = redisCommands.set(key, "demus007");
+        System.out.println(redisCommands.get(key));
 
         System.out.println("Connected to Redis");
 
