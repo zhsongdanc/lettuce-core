@@ -443,13 +443,19 @@ public class ClusterTopologyRefreshOptions {
         /**
          * Redis responds with a {@code MOVED} redirection to a command.
          */
+        // redis cluster 中每个节点都会维护cluster的拓扑，客户端需要使用 CRC16(key) % 16384 = slot index
+        // ref:https://blog.csdn.net/wf13265/article/details/115209721  moved是客户端向错误的服务节点发送命令后返回
+
         MOVED_REDIRECT,
 
+
+        // ask是两个节点迁移槽数据，迁移后，在旧槽所在节点执行get成功，在旧节点的槽执行set时返回ask和新槽位置B
         /**
          * Redis responds with a {@code ASK} redirection to a command.
          */
         ASK_REDIRECT,
 
+        // todo szh
         /**
          * Connections to a particular host run into persistent reconnects (more than one attempt).
          */
